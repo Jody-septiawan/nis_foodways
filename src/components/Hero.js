@@ -1,6 +1,5 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Container, Row, Col } from 'react-bootstrap';
-import pizza from '../assets/pizza.png';
 
 function Hero() {
     return (
@@ -24,7 +23,7 @@ function Hero() {
                         </div>
                     </Col>
                     <Col md={5}>
-                        <img src={pizza} className="img-fluid" />
+                        <img src="../assets/pizza.png" className="img-fluid" />
                     </Col>
                 </Row>
             </Container>

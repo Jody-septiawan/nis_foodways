@@ -36,3 +36,28 @@ body{
   color: #433434;
   letter-spacing: 2px;
 }
+
+.img-chart{
+  width: 30px;
+  height: 30px;
+  margin: auto 0;
+  margin-right: 10px;
+}
+
+.img-user{
+  width: 50px;
+  height: 50px;
+  margin: auto 0;
+}
+
+.register-header{
+  color: #FFC700;
+  font-weight: 900;
+  font-size: 36px;
+  line-height: 49px;
+}
+
+.btn-modal{
+  background: #433434;
+  border: none;
+}
