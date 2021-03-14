@@ -5,7 +5,7 @@ import { useContext, useState } from 'react';
 
 
 import { UserContext } from "../contexts/userContext";
-
+import { CartContext } from "../contexts/cartContext";
 
 function RestNearYou() {
     const path = '../assets/rest-near-you/';
@@ -36,14 +36,8 @@ function RestNearYou() {
         }
     ];
 
-    const SelectRest = (e) => {
-        if (!state.isLogin) {
-            e.preventDefault();
-            console.log('123');
-            setShowL(true);
-        }
-    }
     const [state, dispatch] = useContext(UserContext);
+    const [stateCartRNY, dispatchCartRNY] = useContext(CartContext);
 
     const [Message, setMessage] = useState('');
     const [showL, setShowL] = useState(false);
@@ -54,6 +48,19 @@ function RestNearYou() {
     const handleShowL = () => setShowL(true);
     const handleCloseR = () => setShowR(false);
     const handleShowR = () => setShowR(true);
+
+    const SelectRest = (e) => {
+
+        if (!state.isLogin) {
+            e.preventDefault();
+            setShowL(true);
+        } else {
+            dispatchCartRNY({
+                type: "ADD_RESTAURANT",
+                payload: e
+            });
+        }
+    }
 
     const handleLogin = (e) => {
         e.preventDefault();
@@ -128,7 +135,7 @@ function RestNearYou() {
                     </Col>
                     {data.map(item =>
                         <Col md={3} key={item.id}>
-                            <Link className="text-rest" onClick={SelectRest} to={{ pathname: "/menus/" + item.id, }}>
+                            <Link className="text-rest" onClick={() => SelectRest(item)} to={{ pathname: "/menus/" + item.id, }}>
                                 <div className="card card-rest">
                                     <div className="card-body p-2 text-center">
                                         <img src={item.logo} className="img-fluid" alt="img" />

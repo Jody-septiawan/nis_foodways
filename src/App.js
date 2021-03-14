@@ -10,6 +10,7 @@ import Navbar from './components/Navbar';
 import Landing from './pages/Landing';
 import Menus from './pages/Menus';
 import CartOrder from './pages/CartOrder';
+import Profile from './pages/Profile';
 
 
 function MenuRest({ match }) {
@@ -32,8 +33,11 @@ function App() {
             <Route path="/menus/:id">
               <Menus />
             </Route>
-            <Route path="/CartOrder/">
+            <Route path="/cart-order/:idR">
               <CartOrder />
+            </Route>
+            <Route path="/profile">
+              <Profile />
             </Route>
             <Route path="/">
               <Landing />

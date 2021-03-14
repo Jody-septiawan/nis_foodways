@@ -3,7 +3,9 @@ import { createContext, useReducer } from "react";
 export const CartContext = createContext();
 
 const initialState = {
-    carts: []
+    carts: [],
+    restaurant: null,
+    transaction: []
 };
 
 const reducer = (state, action) => {
@@ -66,6 +68,23 @@ const reducer = (state, action) => {
             return {
                 ...state,
                 carts: filteredCarts,
+            };
+        case "ADD_RESTAURANT":
+            return {
+                ...state,
+                carts: [],
+                restaurant: payload,
+            };
+        case "ADD_ORDER":
+            return {
+                ...state,
+                carts: [],
+                restaurant: null,
+                transaction: [
+                    ...state.transaction, {
+                        ...payload,
+                    },
+                ],
             };
         default:
             throw new Error();

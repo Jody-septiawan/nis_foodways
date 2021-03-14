@@ -1,18 +1,20 @@
 import { useState, useContext } from 'react';
 import { Navbar, Nav, Button, Modal, Form } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import { UserContext } from "../contexts/userContext";
 import { CartContext } from "../contexts/cartContext";
 
+import DataUser from '../components/userData';
+
 function NavbarComp() {
+
+    let { id } = useParams();
 
     const [state, dispatch] = useContext(UserContext);
     const [stateCart, dispatchCart] = useContext(CartContext);
-
-    // console.log('Navbar ', stateCart.carts.length);
 
     const [Message, setMessage] = useState('');
     const [showL, setShowL] = useState(false);
@@ -30,23 +32,26 @@ function NavbarComp() {
         let emailLData = e.target.elements.emailLogin.value;
         let passwordLData = e.target.elements.passwordLogin.value;
 
-        const dataUserLogin = {
-            email: emailLData,
-            password: passwordLData
-        };
+        var dataLogin = false;
 
-        if (emailLData == 'user@gmail.com') {
+        dataLogin = DataUser.find(
+            (user) => user.email === emailLData
+        );
+
+        console.log(dataLogin);
+
+        // const dataUserLogin = {
+        //     email: emailLData,
+        //     password: passwordLData
+        // };
+
+        if (dataLogin) {
             dispatch({
                 type: "LOGIN_SUCCESS",
-                payload: dataUserLogin
-            });
-        } else if (emailLData == 'partner@gmail.com') {
-            dispatch({
-                type: "LOGIN_SUCCESS",
-                payload: dataUserLogin
+                payload: dataLogin
             });
         } else {
-            setMessage('Email salah!')
+            setMessage('Email tidak ditemukan')
         }
     }
     // console.log(state);
@@ -83,18 +88,26 @@ function NavbarComp() {
         setUserRegis(dataUserRegis)
     }
 
+    const CartClick = (e) => {
+        if (stateCart.carts.length == 0) {
+            e.preventDefault();
+        }
+    }
+
     if (state.isLogin) {
         return (
             <div>
                 <Navbar expand="lg" className="fixed-top bg-yellow">
-                    <Navbar.Brand href="/">
-                        <img src='../assets/icon.png' />
+                    <Navbar.Brand>
+                        <Link className="text-warning ml-2" to={{ pathname: "/", }}>
+                            <img src='../assets/icon.png' />
+                        </Link>
                     </Navbar.Brand>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
                         <Nav className="ml-auto">
                             {state.user.email == 'user@gmail.com' ? (
-                                <Link className="text-rest" to={{ pathname: "/CartOrder/", }}>
+                                <Link className="text-rest" onClick={CartClick} to={{ pathname: "/cart-order/" + id, }}>
                                     <img src="../assets/chart.png" className="img-chart" />
                                     {stateCart.carts.length != 0 &&
                                         <span className="inc-chart d-inline">{stateCart.carts.length}</span>
@@ -111,8 +124,10 @@ function NavbarComp() {
         return (
             <div>
                 <Navbar expand="lg" className="fixed-top bg-yellow">
-                    <Navbar.Brand href="/">
-                        <img src="../assets/icon.png" />
+                    <Navbar.Brand >
+                        <Link className="text-warning ml-2" to={{ pathname: "/", }}>
+                            <img src='../assets/icon.png' />
+                        </Link>
                     </Navbar.Brand>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">

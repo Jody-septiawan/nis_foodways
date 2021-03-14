@@ -159,3 +159,37 @@ body{
 .btn-order-cart{
   background-color: #433434;
 }
+
+.card-maps{
+  width: 350px;
+}
+
+.text-header-profile{
+  font-size: 25px;
+  font-weight: bold;
+}
+
+.box-img-text {
+  display: flex;
+  /* align-items: center; */
+}
+
+.box-2-column-text {
+  display: grid;
+  grid-template-columns: 40% 60%;
+}
+
+.text-data-profile{
+  font-size: 17px;
+  font-weight: 400;
+  color: black !important;
+}
+
+.btn-edi-profile{
+  width: 180px;
+}
+
+.bg-finished{
+  background: #e8fff4;
+  color: #00FF47;
+}

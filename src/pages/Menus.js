@@ -13,7 +13,6 @@ function Menus() {
 
     const [state, dispatch] = useContext(CartContext);
 
-
     let { id } = useParams();
     var MenuRest = false;
 
