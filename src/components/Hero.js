@@ -3,8 +3,8 @@ import { Container, Row, Col } from 'react-bootstrap';
 
 function Hero() {
     return (
-        <div className="my-5">
-            <Container>
+        <div className="mb-5 pt-5">
+            <Container className="mt-5">
                 <Row>
                     <Col md={7}>
                         <div className="text-dark playfair header-hero mt-5">

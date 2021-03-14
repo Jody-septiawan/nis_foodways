@@ -1,12 +1,47 @@
+import { BrowserRouter as Router, Switch, Route, Link, useParams } from 'react-router-dom';
+
+import { UserContextProvider } from "./contexts/userContext";
+import { CartContextProvider } from "./contexts/cartContext";
+
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
-import Landing from './pages/Landing'
+
+import Navbar from './components/Navbar';
+import Landing from './pages/Landing';
+import Menus from './pages/Menus';
+import CartOrder from './pages/CartOrder';
+
+
+function MenuRest({ match }) {
+  return (
+    <>
+      {match.params.id}
+    </>
+  )
+}
 
 function App() {
   return (
-    <div>
-      <Landing />
-    </div>
+    <CartContextProvider>
+      <UserContextProvider>
+        <Router>
+          <div className="bg-yellow">
+            <Navbar />
+          </div>
+          <Switch>
+            <Route path="/menus/:id">
+              <Menus />
+            </Route>
+            <Route path="/CartOrder/">
+              <CartOrder />
+            </Route>
+            <Route path="/">
+              <Landing />
+            </Route>
+          </Switch>
+        </Router>
+      </UserContextProvider>
+    </CartContextProvider>
   );
 }
 

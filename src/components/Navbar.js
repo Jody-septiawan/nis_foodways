@@ -1,115 +1,117 @@
-import { useState } from 'react';
-// import { store, useGlobalState } from 'preact-global-state';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import { useState, useContext } from 'react';
 import { Navbar, Nav, Button, Modal, Form } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 
-// store.init({
-//     email: '',
-//     password: ''
-// });
+import 'bootstrap/dist/css/bootstrap.min.css';
 
+import { UserContext } from "../contexts/userContext";
+import { CartContext } from "../contexts/cartContext";
 
 function NavbarComp() {
 
-    const ImgIcon = "../assets/icon.png";
+    const [state, dispatch] = useContext(UserContext);
+    const [stateCart, dispatchCart] = useContext(CartContext);
 
+    // console.log('Navbar ', stateCart.carts.length);
 
-    var [isLogin, setIsLogin] = useState(false);
-
-    // modal login
+    const [Message, setMessage] = useState('');
     const [showL, setShowL] = useState(false);
+    const [showR, setShowR] = useState(false);
+    const [userRegis, setUserRegis] = useState({});
+
     const handleCloseL = () => setShowL(false);
     const handleShowL = () => setShowL(true);
-
-    const [Message, setMessage] = useState();
-
-    const [emailL, setEmailL] = useState('-');
-    const [passwordL, setPasswordL] = useState('-');
+    const handleCloseR = () => setShowR(false);
+    const handleShowR = () => setShowR(true);
 
     const handleLogin = (e) => {
         e.preventDefault();
+
         let emailLData = e.target.elements.emailLogin.value;
         let passwordLData = e.target.elements.passwordLogin.value;
-        setEmailL(emailLData)
-        setPasswordL(passwordLData)
+
+        const dataUserLogin = {
+            email: emailLData,
+            password: passwordLData
+        };
+
         if (emailLData == 'user@gmail.com') {
-            setIsLogin(true)
+            dispatch({
+                type: "LOGIN_SUCCESS",
+                payload: dataUserLogin
+            });
         } else if (emailLData == 'partner@gmail.com') {
-            setIsLogin(true)
+            dispatch({
+                type: "LOGIN_SUCCESS",
+                payload: dataUserLogin
+            });
         } else {
             setMessage('Email salah!')
         }
     }
-    // console.log('email login :' + emailL);
-    // console.log('password login :' + passwordL);
+    // console.log(state);
 
-    // modal regis
-    const [showR, setShowR] = useState(false);
-    const handleCloseR = () => setShowR(false);
-    const handleShowR = () => setShowR(true);
-
-    const handleShowL2 = () => {
+    const handleShowL2 = (e) => {
+        e.preventDefault();
         setShowL(true);
         setShowR(false);
     }
-    const handleShowR2 = () => {
+    const handleShowR2 = (e) => {
+        e.preventDefault();
         setShowL(false);
         setShowR(true);
     };
 
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [name, setName] = useState('');
-    const [gender, setGender] = useState('');
-    const [phone, setPhone] = useState('');
-    const [as, setAs] = useState('');
 
     const handleRegis = (e) => {
         e.preventDefault()
-        let email = e.target.elements.email.value;
-        let password = e.target.elements.password.value;
-        let name = e.target.elements.name.value;
-        let gender = e.target.elements.gender.value;
-        let phone = e.target.elements.phone.value;
-        let as = e.target.elements.as.value;
+        let emailData = e.target.elements.email.value;
+        let passwordData = e.target.elements.password.value;
+        let nameData = e.target.elements.name.value;
+        let genderData = e.target.elements.gender.value;
+        let phoneData = e.target.elements.phone.value;
+        let asData = e.target.elements.as.value;
 
-        setEmail(email)
-        setPassword(password)
-        setName(name)
-        setGender(gender)
-        setPhone(phone)
-        setAs(as)
+        var dataUserRegis = {
+            email: emailData,
+            password: passwordData,
+            nama: nameData,
+            gender: genderData,
+            phone: phoneData,
+            as: asData
+        }
+        setUserRegis(dataUserRegis)
     }
 
-    // console.log(email);
-    // console.log(password);
-    // console.log(name);
-    // console.log(gender);
-    // console.log(phone);
-    // console.log(as);
-
-    if (isLogin) {
+    if (state.isLogin) {
         return (
             <div>
-                <Navbar expand="lg">
-                    <Navbar.Brand href="#home">
-                        <img src={ImgIcon} />
+                <Navbar expand="lg" className="fixed-top bg-yellow">
+                    <Navbar.Brand href="/">
+                        <img src='../assets/icon.png' />
                     </Navbar.Brand>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
                         <Nav className="ml-auto">
-                            <img src="../assets/chart.png" className="img-chart" />
-                            <img src="../assets/user.png" className="img-user" />
+                            {state.user.email == 'user@gmail.com' ? (
+                                <Link className="text-rest" to={{ pathname: "/CartOrder/", }}>
+                                    <img src="../assets/chart.png" className="img-chart" />
+                                    {stateCart.carts.length != 0 &&
+                                        <span className="inc-chart d-inline">{stateCart.carts.length}</span>
+                                    }
+                                </Link>
+                            ) : ''}
+                            {state.user.email == 'user@gmail.com' ? <img src="../assets/user.png" className="img-user" /> : <img src="../assets/partner.png" className="img-user" />}
                         </Nav>
                     </Navbar.Collapse>
                 </Navbar>
-            </div>
+            </div >
         );
     } else {
         return (
             <div>
-                <Navbar expand="lg">
-                    <Navbar.Brand href="#home">
+                <Navbar expand="lg" className="fixed-top bg-yellow">
+                    <Navbar.Brand href="/">
                         <img src="../assets/icon.png" />
                     </Navbar.Brand>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -169,6 +171,7 @@ function NavbarComp() {
                             <Button type="submit" className="btn btn-modal btn-block mt-4">Register</Button>
                         </Form>
                         <p className="text-muted text-center mt-3">Already have an account ?  Klik <a href="#" onClick={handleShowL2} className="text-dark">Here</a></p>
+                        <pre>{JSON.stringify(userRegis, null, 2).length != 2 && JSON.stringify(userRegis, null, 2)}</pre>
                     </Modal.Body>
                 </Modal>
             </div >

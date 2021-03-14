@@ -1,31 +1,10 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Container, Row, Col } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
+import PopularRestData from './Popular-rest-data';
+
 
 function PopularRest() {
-    const path = '../assets/popular/';
-    const data = [
-        {
-            id: 1,
-            nama: 'Burger King',
-            logo: path + 'bk.png'
-        },
-        {
-            id: 2,
-            nama: 'Starbucks',
-            logo: path + 'sb.png'
-        },
-        {
-            id: 3,
-            nama: 'KFC',
-            logo: path + 'kfc.png'
-        },
-        {
-            id: 4,
-            nama: 'Jco',
-            logo: path + 'jco.png'
-        }
-    ];
-
     return (
         <div>
             <Container>
@@ -35,14 +14,16 @@ function PopularRest() {
                             Popular Restaurant
                         </div>
                     </Col>
-                    {data.map(item =>
+                    {PopularRestData.map(item =>
                         <Col md={3} key={item.id}>
-                            <div className="card">
-                                <div className="card-body playfair py-3">
-                                    <img src={item.logo} className="img-fluid mr-3" alt="img" />
-                                    <b>{item.nama}</b>
+                            <Link className="text-rest" to={{ pathname: "/menus/" + item.id, }}>
+                                <div className="card card-rest">
+                                    <div className="card-body playfair py-3">
+                                        <img src={item.logo} className="img-fluid mr-3" alt="img" />
+                                        <b className="text-dark">{item.nama}</b>
+                                    </div>
                                 </div>
-                            </div>
+                            </Link>
                         </Col>
                     )
                     }
