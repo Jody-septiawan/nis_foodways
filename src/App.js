@@ -11,15 +11,11 @@ import Landing from './pages/Landing';
 import Menus from './pages/Menus';
 import CartOrder from './pages/CartOrder';
 import Profile from './pages/Profile';
-
-
-function MenuRest({ match }) {
-  return (
-    <>
-      {match.params.id}
-    </>
-  )
-}
+import EditProfile from './pages/EditProfile';
+import IncomeTransaction from './pages/IncomeTransaction';
+import ProfilePartner from './pages/ProfilePartner';
+import EditProfilePartner from './pages/EditProfilePartner';
+import AddProduct from './pages/AddProduct';
 
 function App() {
   return (
@@ -33,11 +29,26 @@ function App() {
             <Route path="/menus/:id">
               <Menus />
             </Route>
-            <Route path="/cart-order/:idR">
+            <Route path="/cart-order">
               <CartOrder />
             </Route>
             <Route path="/profile">
               <Profile />
+            </Route>
+            <Route path="/edit-profile">
+              <EditProfile />
+            </Route>
+            <Route path="/income-transaction">
+              <IncomeTransaction />
+            </Route>
+            <Route path="/profile-partner">
+              <ProfilePartner />
+            </Route>
+            <Route path="/edit-profile-partner">
+              <EditProfilePartner />
+            </Route>
+            <Route path="/add-product">
+              <AddProduct />
             </Route>
             <Route path="/">
               <Landing />

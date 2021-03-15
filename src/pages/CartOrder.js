@@ -4,6 +4,7 @@ import { Container, Row, Col, Modal } from 'react-bootstrap';
 import React, { useContext, useState } from 'react';
 
 import { CartContext } from "../contexts/cartContext";
+import { UserContext } from "../contexts/userContext";
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
@@ -16,6 +17,8 @@ import { Link, useHistory } from 'react-router-dom';
 
 function CartOrder() {
 
+    const [stateCartDetail, dispatchCartDetail] = useContext(CartContext);
+
     let history = useHistory();
 
     const [viewport, setViewport] = useState({
@@ -26,7 +29,7 @@ function CartOrder() {
         zoom: 15
     });
 
-    const [stateCartDetail, dispatchCartDetail] = useContext(CartContext);
+    const Token = "pk.eyJ1Ijoiam9keXNlcHRpYXdhbiIsImEiOiJja204bHN3dGQxOTI0MnZydHR2Z2pmZWRuIn0.-BxbTvANWOYx-7gmCMDtHw";
 
     const IncOrder = (item) => {
         dispatchCartDetail({
@@ -56,15 +59,16 @@ function CartOrder() {
     var SubTotal = 0;
     var TmpSubTotal = 0;
     var Total = 0;
+    var JmlOrder = 0;
 
     for (var i = 0; i < QtyOrder; i++) {
         var TmpSubTotal = 0;
         TmpSubTotal = stateCartDetail.carts[i].harga * stateCartDetail.carts[i].qty
         SubTotal = SubTotal + TmpSubTotal;
+        JmlOrder = JmlOrder + stateCartDetail.carts[i].qty;
     }
-    Total = SubTotal + 10000;
 
-    const Token = "pk.eyJ1Ijoiam9keXNlcHRpYXdhbiIsImEiOiJja204bHN3dGQxOTI0MnZydHR2Z2pmZWRuIn0.-BxbTvANWOYx-7gmCMDtHw";
+    Total = SubTotal + 10000;
 
     const [showM, setShowM] = useState(false);
     const handleCloseM = () => setShowM(false);
@@ -153,7 +157,9 @@ function CartOrder() {
                                     <Col xs={6}>
                                         <div className="playfair text-nama-menu-cart mt-3">{item.nama}</div>
                                         <div className="mt-2">
-                                            <FontAwesomeIcon icon={faMinus} onClick={() => DecOrder(item)} className="text-rest icon-click" />
+                                            {item.qty > 1 &&
+                                                <FontAwesomeIcon icon={faMinus} onClick={() => DecOrder(item)} className="text-rest icon-click" />
+                                            }
                                             <span className="cart-qty">{item.qty}</span>
                                             <FontAwesomeIcon icon={faPlus} onClick={() => IncOrder(item)} className="text-rest icon-click" />
                                         </div>
@@ -184,17 +190,17 @@ function CartOrder() {
                             </Col>
                             <Col xs={6}>
                                 <div className="mb-2 mt-3 text-right text-danger">Rp {SubTotal}</div>
-                                <div className="mb-2 text-right">{QtyOrder}</div>
+                                <div className="mb-2 text-right">{JmlOrder}</div>
                                 <div className="mb-3 text-right text-danger">Rp {QtyOrder != 0 ? 10000 : 0}</div>
                             </Col>
                         </Row>
-                        <div className="line-cart my-2"></div>
+                        <div className="line-cart mt-2"></div>
                         <Row>
                             <Col xs={6}>
-                                <div className="mb-2 mt-3 text-total-pembayaran-cart">Total</div>
+                                <div className="mb-2 mt-1 text-total-pembayaran-cart">Total</div>
                             </Col>
                             <Col xs={6}>
-                                <div className="mb-2 mt-3 text-right text-danger text-total-pembayaran-cart">Rp {Total == 10000 ? 0 : Total}</div>
+                                <div className="mb-2 mt-1 text-right text-danger text-total-pembayaran-cart">Rp {Total == 10000 ? 0 : Total}</div>
                             </Col>
                             <Col xs={12} className="text-right">
                                 <button onClick={order} className="btn btn-sm btn-dark px-5 btn-order-cart mt-5">Order</button>

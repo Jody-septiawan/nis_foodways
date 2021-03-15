@@ -1,6 +1,6 @@
 import { useState, useContext } from 'react';
-import { Navbar, Nav, Button, Modal, Form } from 'react-bootstrap';
-import { Link, useParams } from 'react-router-dom';
+import { Navbar, Nav, Button, Modal, Form, Dropdown, DropdownButton } from 'react-bootstrap';
+import { Link, useParams, useHistory } from 'react-router-dom';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -12,6 +12,8 @@ import DataUser from '../components/userData';
 function NavbarComp() {
 
     let { id } = useParams();
+
+    let history = useHistory();
 
     const [state, dispatch] = useContext(UserContext);
     const [stateCart, dispatchCart] = useContext(CartContext);
@@ -38,13 +40,6 @@ function NavbarComp() {
             (user) => user.email === emailLData
         );
 
-        console.log(dataLogin);
-
-        // const dataUserLogin = {
-        //     email: emailLData,
-        //     password: passwordLData
-        // };
-
         if (dataLogin) {
             dispatch({
                 type: "LOGIN_SUCCESS",
@@ -54,7 +49,14 @@ function NavbarComp() {
             setMessage('Email tidak ditemukan')
         }
     }
-    // console.log(state);
+
+    const Logout = (e) => {
+        e.preventDefault();
+        dispatch({
+            type: "LOGOUT",
+        });
+        history.push('/')
+    }
 
     const handleShowL2 = (e) => {
         e.preventDefault();
@@ -66,7 +68,6 @@ function NavbarComp() {
         setShowL(false);
         setShowR(true);
     };
-
 
     const handleRegis = (e) => {
         e.preventDefault()
@@ -94,6 +95,18 @@ function NavbarComp() {
         }
     }
 
+    const imgCircle = "../assets/" + state.user.img;
+
+    console.log('Navbar:');
+
+    var JmlOrder = 0;
+
+    for (var i = 0; i < stateCart.carts.length; i++) {
+        JmlOrder = JmlOrder + stateCart.carts[i].qty;
+    }
+
+    console.log(JmlOrder);
+
     if (state.isLogin) {
         return (
             <div>
@@ -107,14 +120,53 @@ function NavbarComp() {
                     <Navbar.Collapse id="basic-navbar-nav">
                         <Nav className="ml-auto">
                             {state.user.email == 'user@gmail.com' ? (
-                                <Link className="text-rest" onClick={CartClick} to={{ pathname: "/cart-order/" + id, }}>
+                                <Link className="text-rest" onClick={CartClick} to={{ pathname: "/cart-order/" }}>
                                     <img src="../assets/chart.png" className="img-chart" />
                                     {stateCart.carts.length != 0 &&
-                                        <span className="inc-chart d-inline">{stateCart.carts.length}</span>
+                                        <span className="inc-chart d-inline">{JmlOrder}</span>
                                     }
                                 </Link>
                             ) : ''}
-                            {state.user.email == 'user@gmail.com' ? <img src="../assets/user.png" className="img-user" /> : <img src="../assets/partner.png" className="img-user" />}
+                            <Dropdown >
+                                <Dropdown.Toggle variant="transparen" className="btn-dropdown-after-login" id="dropdown-basic">
+                                    <img src={imgCircle} className="img-user" />
+                                </Dropdown.Toggle>
+
+                                <Dropdown.Menu className="dropdown-menu-right shadow">
+                                    {state.user.email == 'user@gmail.com' && (
+                                        <>
+                                            <Link className="text-dropdown pl-2 py-2 d-block" to={{ pathname: "/profile", }}>
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-person mb-1 mr-2" viewBox="0 0 16 16">
+                                                    <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z" />
+                                                </svg>
+                                                Profile
+                                            </Link>
+                                        </>
+                                    )}
+                                    {state.user.email == 'partner@gmail.com' && (
+                                        <>
+                                            <Link className="text-dropdown pl-2 py-2 d-block" to={{ pathname: "/profile-partner", }}>
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-person mb-1 mr-2" viewBox="0 0 16 16">
+                                                    <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z" />
+                                                </svg>
+                                                Profile Partner
+                                            </Link>
+                                            <Link className="text-dropdown pl-2 py-2 d-block" to={{ pathname: "/add-product", }}>
+                                                <img src="../assets/food.png" className="img-dropdown-food mb-1 mr-1" />
+                                                Add Product
+                                            </Link>
+                                        </>
+                                    )}
+                                    <hr className="my-1" />
+                                    <Link onClick={Logout} className="text-dropdown-logout pl-2 py-2 d-block" to={{ pathname: "/", }}>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-box-arrow-right mr-2 text-danger" viewBox="0 0 16 16">
+                                            <path fill-rule="evenodd" d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0v2z" />
+                                            <path fill-rule="evenodd" d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z" />
+                                        </svg>
+                                        Logout
+                                    </Link>
+                                </Dropdown.Menu>
+                            </Dropdown>
                         </Nav>
                     </Navbar.Collapse>
                 </Navbar>
@@ -138,7 +190,7 @@ function NavbarComp() {
                     </Navbar.Collapse>
                 </Navbar>
 
-                <Modal show={showL} onHide={handleCloseL}>
+                <Modal show={showL} onHide={handleCloseL} centered>
                     <Modal.Body className="mx-3">
                         <div className="register-header mb-4">Login</div>
                         {Message ?
@@ -158,7 +210,7 @@ function NavbarComp() {
                     </Modal.Body>
                 </Modal>
 
-                <Modal show={showR} onHide={handleCloseR}>
+                <Modal show={showR} onHide={handleCloseR} centered>
                     <Modal.Body className="mx-3">
                         <div className="register-header mb-4">Register</div>
                         <Form className="register" onSubmit={handleRegis}>

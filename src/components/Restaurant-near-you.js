@@ -1,13 +1,15 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Container, Row, Col, Navbar, Nav, Button, Modal, Form } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { useContext, useState } from 'react';
 
+import DataUser from '../components/userData';
 
 import { UserContext } from "../contexts/userContext";
 import { CartContext } from "../contexts/cartContext";
 
 function RestNearYou() {
+    let history = useHistory();
     const path = '../assets/rest-near-you/';
     const data = [
         {
@@ -50,11 +52,12 @@ function RestNearYou() {
     const handleShowR = () => setShowR(true);
 
     const SelectRest = (e) => {
-
+        // console.log('SelectRest', e);
         if (!state.isLogin) {
-            e.preventDefault();
+            // e.stopPropagation();
             setShowL(true);
         } else {
+            history.push('/menus/' + e.id)
             dispatchCartRNY({
                 type: "ADD_RESTAURANT",
                 payload: e
@@ -68,35 +71,30 @@ function RestNearYou() {
         let emailLData = e.target.elements.emailLogin.value;
         let passwordLData = e.target.elements.passwordLogin.value;
 
-        const dataUserLogin = {
-            email: emailLData,
-            password: passwordLData
-        };
+        var dataLogin = false;
 
-        if (emailLData == 'user@gmail.com') {
+        dataLogin = DataUser.find(
+            (user) => user.email === emailLData
+        );
+
+        if (dataLogin) {
+            handleCloseL();
             dispatch({
                 type: "LOGIN_SUCCESS",
-                payload: dataUserLogin
+                payload: dataLogin
             });
-            setShowL(false);
-        } else if (emailLData == 'partner@gmail.com') {
-            dispatch({
-                type: "LOGIN_SUCCESS",
-                payload: dataUserLogin
-            });
-            setShowL(false);
         } else {
-            setMessage('Email salah!')
+            setMessage('Email tidak ditemukan')
         }
-        console.log('HandleRestauran-near-you')
+
     }
-    console.log(state);
 
     const handleShowL2 = (e) => {
         e.preventDefault();
         setShowL(true);
         setShowR(false);
     }
+
     const handleShowR2 = (e) => {
         e.preventDefault();
         setShowL(false);
@@ -135,23 +133,23 @@ function RestNearYou() {
                     </Col>
                     {data.map(item =>
                         <Col md={3} key={item.id}>
-                            <Link className="text-rest" onClick={() => SelectRest(item)} to={{ pathname: "/menus/" + item.id, }}>
-                                <div className="card card-rest">
-                                    <div className="card-body p-2 text-center">
-                                        <img src={item.logo} className="img-fluid" alt="img" />
-                                        <div className="text-left text-dark ml-2 mt-2">
-                                            <b className="playfair">{item.nama}</b>
-                                            <p className="mb-0">{item.jarak}</p>
-                                        </div>
+                            {/* <Link className="text-rest" onClick={() => SelectRest(item)} to={{ pathname: "/menus/" + item.id, }}> */}
+                            <div className="card card-rest icon-click" onClick={() => SelectRest(item)}>
+                                <div className="card-body p-2 text-center">
+                                    <img src={item.logo} className="img-fluid" alt="img" />
+                                    <div className="text-left text-dark ml-2 mt-2">
+                                        <b className="playfair">{item.nama}</b>
+                                        <p className="mb-0">{item.jarak}</p>
                                     </div>
                                 </div>
-                            </Link>
+                            </div>
+                            {/* </Link> */}
                         </Col>
                     )
                     }
                 </Row>
             </Container>
-            <Modal show={showL} onHide={handleCloseL}>
+            <Modal show={showL} onHide={handleCloseL} centered>
                 <Modal.Body className="mx-3">
                     <div className="register-header mb-4">Login</div>
                     {Message ?
@@ -170,7 +168,7 @@ function RestNearYou() {
                     <p className="text-muted text-center mt-3">Don't have an account ? Klik <a href="#" onClick={handleShowR2} className="text-dark">Here</a></p>
                 </Modal.Body>
             </Modal>
-            <Modal show={showR} onHide={handleCloseR}>
+            <Modal show={showR} onHide={handleCloseR} centered>
                 <Modal.Body className="mx-3">
                     <div className="register-header mb-4">Register</div>
                     <Form className="register" onSubmit={handleRegis}>

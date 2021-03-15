@@ -61,8 +61,8 @@ body{
 
 
 .img-user{
-  width: 50px;
-  height: 50px;
+  width: 40px;
+  height: 40px;
   margin: auto 0;
 }
 
@@ -179,6 +179,11 @@ body{
   grid-template-columns: 40% 60%;
 }
 
+.box-edit-profile-grid{
+  display: grid;
+  grid-template-columns: 80% 20%;
+}
+
 .text-data-profile{
   font-size: 17px;
   font-weight: 400;
@@ -192,4 +197,37 @@ body{
 .bg-finished{
   background: #e8fff4;
   color: #00FF47;
+}
+
+.btn-dropdown-after-login:focus{
+  outline: none;
+  box-shadow: none;
+}
+
+.btn-dropdown-after-login{
+  border: none;
+}
+
+.text-dropdown{
+ color: black;
+}
+
+.text-dropdown-logout{
+ color: black;
+}
+
+.text-dropdown:hover{
+  text-decoration: none;
+  background-color: #ececec;
+  color: black;
+}
+
+.text-dropdown-logout:hover{
+  text-decoration: none;
+  background-color: #ececec;
+  color: black;
+}
+
+.img-dropdown-food{
+  width: 23px;
 }

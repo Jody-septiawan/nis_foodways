@@ -7,13 +7,6 @@ const initialState = {
     user: []
 };
 
-// const initialState = {
-//     isLogin: true,
-//     user: {
-//         email: 'user@gmail.com'
-//     }
-// };
-
 const reducer = (state, action) => {
     const { type, payload } = action;
 
@@ -30,7 +23,7 @@ const reducer = (state, action) => {
         case "LOGOUT":
             return {
                 isLogin: false,
-                user: null
+                user: []
             };
         default:
             throw new Error();

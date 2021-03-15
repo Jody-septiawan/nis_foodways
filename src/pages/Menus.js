@@ -1,9 +1,8 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../App.css';
-import { Container, Row, Col } from 'react-bootstrap';
+import { Container, Row, Col, Button } from 'react-bootstrap';
 import { BrowserRouter as Router, Switch, Route, Link, useParams } from 'react-router-dom';
 import DataMenu from '../components/Data-menu';
-import { Button } from 'react-bootstrap';
 import { useContext } from 'react';
 
 import { CartContext } from "../contexts/cartContext";
@@ -14,6 +13,7 @@ function Menus() {
     const [state, dispatch] = useContext(CartContext);
 
     let { id } = useParams();
+
     var MenuRest = false;
 
     MenuRest = DataMenu.find(
@@ -64,7 +64,9 @@ function Menus() {
             <>
                 <div className="text-center" style={{ marginTop: '100px' }}>
                     <i className="h3">Daftar menu makanan tidak tersedia</i> <br />
-                    <a href="/">Back to Home</a>
+                    <Link className="text-warning ml-2" to={{ pathname: "/", }}>
+                        Back to Home
+                    </Link>
                 </div>
             </>
         )

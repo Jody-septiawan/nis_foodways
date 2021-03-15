@@ -19,7 +19,7 @@ function Profile() {
     const imgSquare = stateUserLogin.user.imgSquare;
 
     const EditProfile = () => {
-        history.push('/edit-profile');
+        history.push('/edit-profile-partner');
     }
 
     return (
@@ -28,7 +28,7 @@ function Profile() {
                 <Row>
                     <Col xs={6}>
                         <div className="playfair text-header-profile mb-4">
-                            My Profile
+                            Profile Partner
                         </div>
                         <div className="box-img-text">
                             <img src={imgSquare} className="rounded" />
@@ -59,27 +59,23 @@ function Profile() {
                         <div className="playfair text-header-profile mb-4">
                             History Order
                         </div>
-                        {stateCartDetail.transaction.map((item, index) =>
-                            <div className="card mb-1" key={index}>
-                                <div className="card-body py-2">
-                                    <div className="box-2-column-text">
-                                        <div className="">
-                                            <div className="playfair mb-2"><b>{item.name}</b></div>
-                                            <div>{item.date}</div>
-                                            <div className="text-rest mt-3"><b>Total : Rp {item.total}</b></div>
-                                        </div>
-                                        <div className="ml-3 text-right d-block">
-                                            <img src="../assets/icon.png" />
-                                            <div className="mt-4">
-                                                <span className="bg-finished px-4 py-1 rounded">{item.status}</span>
-                                            </div>
+                        <div className="card mb-1">
+                            <div className="card-body py-3">
+                                <div className="box-2-column-text">
+                                    <div className="">
+                                        <div className="playfair mb-2"><b>Andi</b></div>
+                                        <div>12 March 2021</div>
+                                        <div className="text-rest mt-3"><b>Total : Rp 45.000</b></div>
+                                    </div>
+                                    <div className="ml-3 text-right d-block">
+                                        <img src="../assets/icon.png" />
+                                        <div className="mt-4">
+                                            <span className="bg-finished px-4 py-1 rounded">Finished</span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        )
-                        }
-                        {stateCartDetail.transaction.length == 0 && <i className="text-muted">No History Order</i>}
+                        </div>
                     </Col>
                 </Row>
             </Container>
